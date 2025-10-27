@@ -1,0 +1,225 @@
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { ScrollArea } from './ui/scroll-area';
+import { Badge } from './ui/badge';
+import { X, Send, Bot, User, Sparkles } from 'lucide-react';
+
+interface Message {
+  id: string;
+  type: 'user' | 'bot';
+  content: string;
+  timestamp: Date;
+}
+
+interface ShieldBotProps {
+  onClose: () => void;
+}
+
+export function ShieldBot({ onClose }: ShieldBotProps) {
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      type: 'bot',
+      content: 'Hi! I\'m ShieldBot, your cybersecurity assistant. I can help you with security questions, explain features, and provide guidance. How can I help you today?',
+      timestamp: new Date()
+    }
+  ]);
+  const [input, setInput] = useState('');
+
+  const quickQuestions = [
+    'Is this email suspicious?',
+    'How do I enable MFA?',
+    'What\'s my security score?',
+    'How do phishing simulations work?',
+  ];
+
+  const getBotResponse = (userMessage: string): string => {
+    const lower = userMessage.toLowerCase();
+
+    // Security score queries
+    if (lower.includes('security score') || lower.includes('health score') || lower.includes('my score')) {
+      return 'Your Cyber Health Score is displayed on the main dashboard. It\'s calculated based on your security configuration (40%), employee training readiness (30%), and threat detection activity (30%). You can improve it by completing the 2-minute cyber health check and ensuring all employees complete their training.';
+    }
+
+    // MFA queries
+    if (lower.includes('mfa') || lower.includes('multi-factor') || lower.includes('two-factor') || lower.includes('2fa')) {
+      return 'Multi-Factor Authentication (MFA) adds an extra layer of security beyond passwords. To enable MFA: 1) Go to Settings → Security, 2) Click "Enable Two-Factor Authentication", 3) Follow the setup wizard. I highly recommend enabling this for all accounts!';
+    }
+
+    // Suspicious email/phishing
+    if (lower.includes('suspicious') || lower.includes('phishing') || lower.includes('email safe')) {
+      return 'To check if an email is suspicious, use our Phishing Detection tool! Look for red flags like: urgent language, generic greetings ("Dear customer"), mismatched sender domains, requests for passwords or personal info, and suspicious links. When in doubt, verify with the sender through a different channel.';
+    }
+
+    // Phishing simulation
+    if (lower.includes('simulation') || lower.includes('test email') || lower.includes('fake phishing')) {
+      return 'Phishing simulations help train your team to recognize threats. Go to the Phishing Simulation page, select a template (like "Password Reset"), choose target employees, and send. The system tracks who clicks the link so you can provide additional training where needed. It\'s completely safe - no real harm occurs!';
+    }
+
+    // Training queries
+    if (lower.includes('training') || lower.includes('lesson') || lower.includes('learn')) {
+      return 'Our Training Portal offers 5 micro-lessons covering key security topics. Complete each lesson and pass the quiz to unlock the next one. Topics include: Recognizing Phishing, Safe Links & Attachments, Passwords & MFA, Data Handling, and Reporting Incidents. Completing training boosts your team\'s readiness score!';
+    }
+
+    // Scan/detection queries
+    if (lower.includes('scan') || lower.includes('url') || lower.includes('link check')) {
+      return 'Use the Phishing Detection tool to scan suspicious URLs or email content. Our AI-powered scanner checks for patterns like mismatched domains, suspicious TLDs, urgent keywords, and other phishing indicators. You can toggle AI Mode for enhanced detection. All scans are saved to your history.';
+    }
+
+    // Reports
+    if (lower.includes('report') || lower.includes('analytics') || lower.includes('export')) {
+      return 'The Reports page shows comprehensive analytics including your health score trend, training completion, simulation outcomes, and department leaderboards. You can export a PDF summary by clicking the "Export PDF" button at the top of the Reports page.';
+    }
+
+    // General help
+    if (lower.includes('help') || lower.includes('how') || lower.includes('what')) {
+      return 'I can help with: checking if emails are suspicious, explaining your security score, guiding you through MFA setup, explaining phishing simulations, and answering questions about training. Try asking me something specific, or use one of the quick questions below!';
+    }
+
+    // Default response
+    return 'That\'s a great question! I can help you with: security scores, MFA setup, phishing detection, training modules, simulations, and reports. Could you provide more details or try one of the quick questions below?';
+  };
+
+  const handleSend = () => {
+    if (!input.trim()) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      type: 'user',
+      content: input,
+      timestamp: new Date()
+    };
+
+    setMessages([...messages, userMessage]);
+    setInput('');
+
+    // Simulate bot thinking delay
+    setTimeout(() => {
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: 'bot',
+        content: getBotResponse(input),
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, botMessage]);
+    }, 600);
+  };
+
+  const handleQuickQuestion = (question: string) => {
+    setInput(question);
+    setTimeout(() => handleSend(), 100);
+  };
+
+  return (
+    <Card className="backdrop-blur-md bg-white/95 border-0 shadow-2xl h-[600px] flex flex-col">
+      <CardHeader className="border-b border-gray-200 bg-gradient-to-r from-blue-500 to-teal-500 text-white rounded-t-lg">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+              <Bot className="w-6 h-6" />
+            </div>
+            <div>
+              <CardTitle className="text-white flex items-center gap-2">
+                ShieldBot
+                <Sparkles className="w-4 h-4" />
+              </CardTitle>
+              <CardDescription className="text-blue-100">
+                AI Security Assistant
+              </CardDescription>
+            </div>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="text-white hover:bg-white/20"
+          >
+            <X className="w-5 h-5" />
+          </Button>
+        </div>
+      </CardHeader>
+
+      <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
+        <ScrollArea className="flex-1 p-4">
+          <div className="space-y-4">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex items-start gap-2 ${
+                  message.type === 'user' ? 'flex-row-reverse' : ''
+                }`}
+              >
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    message.type === 'user'
+                      ? 'bg-gradient-to-br from-blue-500 to-teal-500 text-white'
+                      : 'bg-gray-200 text-gray-600'
+                  }`}
+                >
+                  {message.type === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                </div>
+                <div
+                  className={`max-w-[80%] p-3 rounded-lg ${
+                    message.type === 'user'
+                      ? 'bg-gradient-to-r from-blue-500 to-teal-500 text-white'
+                      : 'bg-gray-100 text-gray-900'
+                  }`}
+                >
+                  <p className="text-sm leading-relaxed">{message.content}</p>
+                  <p
+                    className={`text-xs mt-1 ${
+                      message.type === 'user' ? 'text-blue-100' : 'text-gray-500'
+                    }`}
+                  >
+                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
+
+        {/* Quick Questions */}
+        {messages.length <= 1 && (
+          <div className="p-4 border-t border-gray-200 bg-gray-50">
+            <p className="text-xs text-gray-600 mb-2">Quick questions:</p>
+            <div className="flex flex-wrap gap-2">
+              {quickQuestions.map((question, index) => (
+                <Badge
+                  key={index}
+                  variant="outline"
+                  className="cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-colors"
+                  onClick={() => handleQuickQuestion(question)}
+                >
+                  {question}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Input Area */}
+        <div className="p-4 border-t border-gray-200">
+          <div className="flex gap-2">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+              placeholder="Ask me anything..."
+              className="flex-1"
+            />
+            <Button
+              onClick={handleSend}
+              disabled={!input.trim()}
+              className="bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600"
+            >
+              <Send className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
