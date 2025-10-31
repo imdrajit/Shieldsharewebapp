@@ -10,6 +10,9 @@ import { TrainingPage } from './components/TrainingPage';
 import { PhishingSimulationPage } from './components/PhishingSimulationPage';
 import { PasswordCheckupPage } from './components/PasswordCheckupPage';
 import { SpotThePhishGame } from './components/SpotThePhishGame';
+import { LeaderboardPage } from './components/LeaderboardPage';
+import { TeamMissionsPage } from './components/TeamMissionsPage';
+import { MyProgressPage } from './components/MyProgressPage';
 import { ReportsPage } from './components/ReportsPage';
 import { SettingsPage } from './components/SettingsPage';
 import { Toaster } from './components/ui/sonner';
@@ -336,6 +339,7 @@ export default function App() {
             scans={scans}
             lessons={lessons}
             updateCompany={updateCompany}
+            onNavigate={setCurrentPage}
           />
         );
       case 'phishing-detection':
@@ -358,6 +362,12 @@ export default function App() {
         return <PasswordCheckupPage />;
       case 'spot-the-phish':
         return <SpotThePhishGame />;
+      case 'leaderboard':
+        return <LeaderboardPage />;
+      case 'team-missions':
+        return <TeamMissionsPage />;
+      case 'my-progress':
+        return <MyProgressPage />;
       case 'reports':
         return (
           <ReportsPage

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Shield, LayoutDashboard, Search, ScanLine, GraduationCap, Mail, BarChart3, Settings, Menu, X, User, Sparkles, MessageCircle, MailOpen, Globe, Lock, Target, Brain } from 'lucide-react';
+import { Shield, LayoutDashboard, Search, ScanLine, GraduationCap, Mail, BarChart3, Settings, Menu, X, User, Sparkles, MessageCircle, MailOpen, Globe, Lock, Target, Brain, Trophy, Users, TrendingUp } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Avatar, AvatarFallback } from './ui/avatar';
@@ -29,6 +29,9 @@ export function DashboardLayout({ user, currentPage, setCurrentPage, children, i
     { id: 'simulation', label: 'Phishing Simulation', icon: Mail },
     { id: 'password-checkup', label: 'Password Checkup', icon: Lock },
     { id: 'spot-the-phish', label: 'Spot the Phish', icon: Target },
+    { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
+    { id: 'team-missions', label: 'Team Missions', icon: Users },
+    { id: 'my-progress', label: 'My Progress', icon: TrendingUp },
     { id: 'reports', label: 'Reports', icon: BarChart3 },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];

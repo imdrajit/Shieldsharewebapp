@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 import { Badge } from './ui/badge';
-import { Shield, TrendingUp, ScanLine, GraduationCap, AlertTriangle, CheckCircle2, Clock, Play } from 'lucide-react';
+import { Shield, TrendingUp, ScanLine, GraduationCap, AlertTriangle, CheckCircle2, Clock, Play, Trophy, Users, Star, Target, Zap, ArrowRight } from 'lucide-react';
 import { CyberHealthCheckModal } from './CyberHealthCheckModal';
 import type { Company, Employee, Scan, Lesson } from '../App';
 
@@ -13,9 +13,10 @@ interface DashboardPageProps {
   scans: Scan[];
   lessons: Lesson[];
   updateCompany: (updates: Partial<Company>) => void;
+  onNavigate?: (page: string) => void;
 }
 
-export function DashboardPage({ company, employees, scans, lessons, updateCompany }: DashboardPageProps) {
+export function DashboardPage({ company, employees, scans, lessons, updateCompany, onNavigate }: DashboardPageProps) {
   const [healthCheckOpen, setHealthCheckOpen] = useState(false);
 
   const lastScan = scans[0];
@@ -232,11 +233,129 @@ export function DashboardPage({ company, employees, scans, lessons, updateCompan
         </Card>
       </div>
 
+      {/* Gamification Features */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Leaderboard Preview */}
+        <Card 
+          className="backdrop-blur-sm bg-gradient-to-br from-amber-50 to-yellow-50 border-0 shadow-lg hover:shadow-xl transition-all cursor-pointer group"
+          onClick={() => onNavigate?.('leaderboard')}
+        >
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-gray-900">
+              <Trophy className="w-5 h-5 text-amber-500" />
+              Leaderboard
+            </CardTitle>
+            <CardDescription>See top cyber defenders</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 p-2 bg-white/60 rounded-lg">
+                <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-lg flex items-center justify-center text-white">
+                  #1
+                </div>
+                <div className="flex-1">
+                  <div className="text-sm text-gray-900">Your Rank</div>
+                  <div className="text-xs text-gray-600">4,850 XP</div>
+                </div>
+                <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-700">6 Badges Earned</span>
+                <Badge className="bg-amber-100 text-amber-700 border-amber-200">Level 12</Badge>
+              </div>
+              <Button 
+                className="w-full bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:opacity-90 group-hover:scale-105 transition-transform"
+                size="sm"
+              >
+                View Rankings
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Team Missions Preview */}
+        <Card 
+          className="backdrop-blur-sm bg-gradient-to-br from-blue-50 to-cyan-50 border-0 shadow-lg hover:shadow-xl transition-all cursor-pointer group"
+          onClick={() => onNavigate?.('team-missions')}
+        >
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-gray-900">
+              <Users className="w-5 h-5 text-blue-500" />
+              Team Missions
+            </CardTitle>
+            <CardDescription>Collaborate and compete</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="p-3 bg-white/60 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <Target className="w-4 h-4 text-blue-600" />
+                  <span className="text-sm text-gray-900">Active Missions</span>
+                </div>
+                <div className="text-2xl text-blue-700 mb-1">3</div>
+                <Progress value={65} className="h-2" />
+                <p className="text-xs text-gray-600 mt-1">65% team progress</p>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-700">+500 XP Available</span>
+                <Badge className="bg-blue-100 text-blue-700 border-blue-200">Team</Badge>
+              </div>
+              <Button 
+                className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:opacity-90 group-hover:scale-105 transition-transform"
+                size="sm"
+              >
+                View Missions
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* My Progress Preview */}
+        <Card 
+          className="backdrop-blur-sm bg-gradient-to-br from-purple-50 to-pink-50 border-0 shadow-lg hover:shadow-xl transition-all cursor-pointer group"
+          onClick={() => onNavigate?.('my-progress')}
+        >
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-gray-900">
+              <TrendingUp className="w-5 h-5 text-purple-500" />
+              My Progress
+            </CardTitle>
+            <CardDescription>Track your growth</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="p-3 bg-white/60 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <Zap className="w-4 h-4 text-purple-600" />
+                  <span className="text-sm text-gray-900">XP to Next Level</span>
+                </div>
+                <div className="text-2xl text-purple-700 mb-1">1,650</div>
+                <Progress value={75} className="h-2" />
+                <p className="text-xs text-gray-600 mt-1">75% to Level 13</p>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-700">+18% This Month</span>
+                <Badge className="bg-purple-100 text-purple-700 border-purple-200">Improving</Badge>
+              </div>
+              <Button 
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 group-hover:scale-105 transition-transform"
+                size="sm"
+              >
+                View Progress
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Security Recommendations */}
       <Card className="backdrop-blur-sm bg-white/90 border-0 shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-gray-900">
-            <TrendingUp className="w-5 h-5 text-blue-500" />
+            <Shield className="w-5 h-5 text-blue-500" />
             Security Recommendations
           </CardTitle>
           <CardDescription>
