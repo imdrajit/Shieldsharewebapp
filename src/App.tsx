@@ -3,6 +3,10 @@ import { LoginPage } from "./components/LoginPage";
 import { OnboardingPage } from "./components/OnboardingPage";
 import { DashboardLayout } from "./components/DashboardLayout";
 import { DashboardPage } from "./components/DashboardPage";
+import { BrowserProtectionPage } from "./components/BrowserProtectionPage";
+import { EmailSecuritySyncPage } from "./components/EmailSecuritySyncPage";
+import { USBProtectionPage } from "./components/USBProtectionPage";
+import { AutoDataErasePage } from "./components/AutoDataErasePage";
 import { PhishingDetectionPage } from "./components/PhishingDetectionPage";
 import { EmailAnalyzerPage } from "./components/EmailAnalyzerPage";
 import { ThreatInsightsPage } from "./components/ThreatInsightsPage";
@@ -611,6 +615,14 @@ export default function App() {
         return <PasswordCheckupPage />;
       case "spot-the-phish":
         return <SpotThePhishGame />;
+      case "browser-protection":
+        return <BrowserProtectionPage />;
+      case "email-security":
+        return <EmailSecuritySyncPage />;
+      case "usb-protection":
+        return <USBProtectionPage />;
+      case "auto-data-erase":
+        return <AutoDataErasePage />;
       case "leaderboard":
         return <LeaderboardPage />;
       case "team-missions":

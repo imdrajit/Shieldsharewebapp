@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { Shield, LayoutDashboard, Search, ScanLine, GraduationCap, Mail, BarChart3, Settings, Menu, X, User, Sparkles, MessageCircle, MailOpen, Globe, Lock, Target, Brain, Trophy, Users, TrendingUp } from 'lucide-react';
+import { motion } from 'motion/react';
+import { Shield, LayoutDashboard, Search, ScanLine, GraduationCap, Mail, BarChart3, Settings, Menu, X, User, Sparkles, MessageCircle, MailOpen, Globe, Lock, Target, Brain, Trophy, Users, TrendingUp, Bell, Usb, UserX } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Avatar, AvatarFallback } from './ui/avatar';
+import { Badge } from './ui/badge';
 import { ShieldBot } from './ShieldBot';
 import { CyberTipWidget } from './CyberTipWidget';
+import { ThreatAlertPanel } from './ThreatAlertPanel';
 import type { User as UserType } from '../App';
 
 interface DashboardLayoutProps {
@@ -19,19 +22,25 @@ export function DashboardLayout({ user, currentPage, setCurrentPage, children, i
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [chatbotOpen, setChatbotOpen] = useState(false);
   const [cyberTipVisible, setCyberTipVisible] = useState(true);
+  const [alertPanelOpen, setAlertPanelOpen] = useState(false);
+  const [unreadAlerts] = useState(2);
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'browser-protection', label: 'Web Shield', icon: Globe },
+    { id: 'email-security', label: 'Email Security', icon: MailOpen },
+    { id: 'usb-protection', label: 'USB Scanner', icon: Usb },
     { id: 'phishing-detection', label: 'Phishing Detection', icon: ScanLine },
-    { id: 'email-analyzer', label: 'Email Analyzer', icon: MailOpen },
-    { id: 'threat-insights', label: 'Threat Insights', icon: Globe },
+    { id: 'email-analyzer', label: 'Email Analyzer', icon: Mail },
+    { id: 'threat-insights', label: 'Threat Insights', icon: Brain },
     { id: 'training', label: 'Training Portal', icon: GraduationCap },
-    { id: 'simulation', label: 'Phishing Simulation', icon: Mail },
+    { id: 'simulation', label: 'Phishing Simulation', icon: Target },
     { id: 'password-checkup', label: 'Password Checkup', icon: Lock },
-    { id: 'spot-the-phish', label: 'Spot the Phish', icon: Target },
+    { id: 'spot-the-phish', label: 'Spot the Phish', icon: Shield },
     { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
     { id: 'team-missions', label: 'Team Missions', icon: Users },
     { id: 'my-progress', label: 'My Progress', icon: TrendingUp },
+    { id: 'auto-data-erase', label: 'Data Control', icon: UserX },
     { id: 'reports', label: 'Reports', icon: BarChart3 },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
@@ -76,6 +85,28 @@ export function DashboardLayout({ user, currentPage, setCurrentPage, children, i
                 className="pl-10 w-64 bg-gray-50"
               />
             </div>
+            
+            {/* Threat Alert Bell */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setAlertPanelOpen(!alertPanelOpen)}
+              className="relative"
+            >
+              <Bell className="w-5 h-5 text-gray-700" />
+              {unreadAlerts > 0 && (
+                <>
+                  <motion.div
+                    className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                  <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center bg-red-500 text-white text-xs">
+                    {unreadAlerts}
+                  </Badge>
+                </>
+              )}
+            </Button>
             
             <Avatar>
               <AvatarFallback className="bg-gradient-to-br from-blue-500 to-teal-500 text-white">
@@ -147,6 +178,12 @@ export function DashboardLayout({ user, currentPage, setCurrentPage, children, i
           <CyberTipWidget onClose={() => setCyberTipVisible(false)} />
         </div>
       )}
+
+      {/* Threat Alert Panel */}
+      <ThreatAlertPanel
+        isOpen={alertPanelOpen}
+        onClose={() => setAlertPanelOpen(false)}
+      />
 
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (

@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { motion } from 'motion/react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import { Badge } from './ui/badge';
-import { X, Send, Bot, User, Sparkles } from 'lucide-react';
+import { Switch } from './ui/switch';
+import { X, Send, Bot, User, Sparkles, Mic, MicOff } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -22,11 +24,13 @@ export function ShieldBot({ onClose }: ShieldBotProps) {
     {
       id: '1',
       type: 'bot',
-      content: 'Hi! I\'m ShieldBot, your cybersecurity assistant. I can help you with security questions, explain features, and provide guidance. How can I help you today?',
+      content: 'Hi! I\'m Cyra, your voice-enabled cybersecurity assistant. I can help you with security questions, explain features, and provide guidance. Try saying "Hey Cyra, scan this link" or "What\'s my risk level?" How can I help you today?',
       timestamp: new Date()
     }
   ]);
   const [input, setInput] = useState('');
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
+  const [isListening, setIsListening] = useState(false);
 
   const quickQuestions = [
     'Is this email suspicious?',
@@ -112,6 +116,26 @@ export function ShieldBot({ onClose }: ShieldBotProps) {
     setTimeout(() => handleSend(), 100);
   };
 
+  const handleVoiceInput = () => {
+    if (!voiceEnabled) return;
+    
+    setIsListening(true);
+    
+    // Simulate voice recognition
+    setTimeout(() => {
+      const voiceCommands = [
+        'Hey Cyra, scan this link',
+        'What\'s my risk level?',
+        'How do I enable MFA?',
+        'Is this email safe?',
+      ];
+      const randomCommand = voiceCommands[Math.floor(Math.random() * voiceCommands.length)];
+      setInput(randomCommand);
+      setIsListening(false);
+      setTimeout(() => handleSend(), 500);
+    }, 2000);
+  };
+
   return (
     <Card className="backdrop-blur-md bg-white/95 border-0 shadow-2xl h-[600px] flex flex-col">
       <CardHeader className="border-b border-gray-200 bg-gradient-to-r from-blue-500 to-teal-500 text-white rounded-t-lg">
@@ -122,11 +146,11 @@ export function ShieldBot({ onClose }: ShieldBotProps) {
             </div>
             <div>
               <CardTitle className="text-white flex items-center gap-2">
-                ShieldBot
+                Cyra Voice
                 <Sparkles className="w-4 h-4" />
               </CardTitle>
               <CardDescription className="text-blue-100">
-                AI Security Assistant
+                Voice-Interactive AI Assistant
               </CardDescription>
             </div>
           </div>
@@ -139,6 +163,30 @@ export function ShieldBot({ onClose }: ShieldBotProps) {
             <X className="w-5 h-5" />
           </Button>
         </div>
+        
+        {/* Voice Mode Toggle */}
+        <div className="flex items-center justify-between mt-3 p-2 bg-white/10 rounded-lg backdrop-blur-sm">
+          <div className="flex items-center gap-2">
+            <Mic className="w-4 h-4 text-white" />
+            <span className="text-white text-sm">Enable Voice Mode</span>
+          </div>
+          <Switch
+            checked={voiceEnabled}
+            onCheckedChange={setVoiceEnabled}
+            className="data-[state=checked]:bg-white data-[state=unchecked]:bg-blue-400"
+          />
+        </div>
+        
+        {voiceEnabled && (
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-blue-100 text-xs mt-2 flex items-center gap-1"
+          >
+            <Sparkles className="w-3 h-3" />
+            Say — "Hey Cyra, scan this link" or "What's my risk level?"
+          </motion.p>
+        )}
       </CardHeader>
 
       <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
@@ -207,9 +255,34 @@ export function ShieldBot({ onClose }: ShieldBotProps) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="Ask me anything..."
+              placeholder={voiceEnabled ? "Ask me anything or use voice..." : "Ask me anything..."}
               className="flex-1"
             />
+            
+            {/* Voice Input Button */}
+            {voiceEnabled && (
+              <Button
+                onClick={handleVoiceInput}
+                disabled={isListening}
+                variant="outline"
+                className={`relative ${isListening ? 'border-blue-500' : ''}`}
+              >
+                {isListening ? (
+                  <>
+                    <MicOff className="w-4 h-4 text-blue-500" />
+                    {/* Voice Wave Animation */}
+                    <motion.div
+                      className="absolute inset-0 rounded-md bg-blue-500/20"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    />
+                  </>
+                ) : (
+                  <Mic className="w-4 h-4" />
+                )}
+              </Button>
+            )}
+            
             <Button
               onClick={handleSend}
               disabled={!input.trim()}
@@ -218,6 +291,29 @@ export function ShieldBot({ onClose }: ShieldBotProps) {
               <Send className="w-4 h-4" />
             </Button>
           </div>
+          
+          {isListening && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mt-2 flex items-center justify-center gap-2 text-blue-600 text-sm"
+            >
+              <motion.div
+                className="flex items-center gap-1"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <div className="w-1 h-3 bg-blue-500 rounded-full" />
+                <div className="w-1 h-5 bg-blue-500 rounded-full" />
+                <div className="w-1 h-4 bg-blue-500 rounded-full" />
+                <div className="w-1 h-6 bg-blue-500 rounded-full" />
+                <div className="w-1 h-4 bg-blue-500 rounded-full" />
+                <div className="w-1 h-5 bg-blue-500 rounded-full" />
+                <div className="w-1 h-3 bg-blue-500 rounded-full" />
+              </motion.div>
+              <span>Listening...</span>
+            </motion.div>
+          )}
         </div>
       </CardContent>
     </Card>

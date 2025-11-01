@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 import { Badge } from './ui/badge';
-import { Shield, TrendingUp, ScanLine, GraduationCap, AlertTriangle, CheckCircle2, Clock, Play, Trophy, Users, Star, Target, Zap, ArrowRight } from 'lucide-react';
+import { Shield, TrendingUp, ScanLine, GraduationCap, AlertTriangle, CheckCircle2, Clock, Play, Trophy, Users, Star, Target, Zap, ArrowRight, Globe, Mail, Usb, UserX } from 'lucide-react';
 import { CyberHealthCheckModal } from './CyberHealthCheckModal';
 import type { Company, Employee, Scan, Lesson } from '../App';
 
@@ -233,8 +233,116 @@ export function DashboardPage({ company, employees, scans, lessons, updateCompan
         </Card>
       </div>
 
+      {/* Real-Time Protection Modules */}
+      <div>
+        <h3 className="text-gray-900 mb-4">🛡️ Real-Time Protection</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Browser Protection */}
+          <Card 
+            className="backdrop-blur-sm bg-gradient-to-br from-cyan-50 to-blue-50 border-0 shadow-lg hover:shadow-xl transition-all cursor-pointer group"
+            onClick={() => onNavigate?.('browser-protection')}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                  <Globe className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-gray-900 text-sm">Web Shield</h4>
+                  <p className="text-xs text-gray-600">Active</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-600">Threats blocked</span>
+                  <Badge className="bg-red-100 text-red-700 border-red-200">38</Badge>
+                </div>
+                <Progress value={95} className="h-1" />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Email Security */}
+          <Card 
+            className="backdrop-blur-sm bg-gradient-to-br from-purple-50 to-pink-50 border-0 shadow-lg hover:shadow-xl transition-all cursor-pointer group"
+            onClick={() => onNavigate?.('email-security')}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                  <Mail className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-gray-900 text-sm">Email Sync</h4>
+                  <p className="text-xs text-gray-600">Connected</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-600">Inbox scanned</span>
+                  <Badge className="bg-purple-100 text-purple-700 border-purple-200">95%</Badge>
+                </div>
+                <Progress value={95} className="h-1 [&>div]:bg-purple-500" />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* USB Protection */}
+          <Card 
+            className="backdrop-blur-sm bg-gradient-to-br from-green-50 to-emerald-50 border-0 shadow-lg hover:shadow-xl transition-all cursor-pointer group"
+            onClick={() => onNavigate?.('usb-protection')}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                  <Usb className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-gray-900 text-sm">USB Scanner</h4>
+                  <p className="text-xs text-gray-600">3 Devices</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-600">Safe devices</span>
+                  <Badge className="bg-green-100 text-green-700 border-green-200">2/3</Badge>
+                </div>
+                <Progress value={67} className="h-1 [&>div]:bg-green-500" />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Data Control */}
+          <Card 
+            className="backdrop-blur-sm bg-gradient-to-br from-orange-50 to-red-50 border-0 shadow-lg hover:shadow-xl transition-all cursor-pointer group"
+            onClick={() => onNavigate?.('auto-data-erase')}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                  <UserX className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-gray-900 text-sm">Data Control</h4>
+                  <p className="text-xs text-gray-600">Enabled</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-600">Policies active</span>
+                  <Badge className="bg-orange-100 text-orange-700 border-orange-200">3/3</Badge>
+                </div>
+                <Progress value={100} className="h-1 [&>div]:bg-orange-500" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
       {/* Gamification Features */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <h3 className="text-gray-900 mb-4">🏆 Gamification & Progress</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Leaderboard Preview */}
         <Card 
           className="backdrop-blur-sm bg-gradient-to-br from-amber-50 to-yellow-50 border-0 shadow-lg hover:shadow-xl transition-all cursor-pointer group"
@@ -349,6 +457,7 @@ export function DashboardPage({ company, employees, scans, lessons, updateCompan
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
 
       {/* Security Recommendations */}
